@@ -22,7 +22,7 @@ async function start() {
       per_page: 100,
     });
     console.log('=====================direct assets==================')
-    console.log(releases[0].assets);
+    console.log(releases.data[0].assets);
 
 
     console.log('==============================URL ASSETS=============================')
