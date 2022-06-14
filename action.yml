@@ -1,0 +1,24 @@
+name: "download-release-files-action"
+
+description: "GitHub Action able to download release files"
+inputs:
+  token:
+    description: "GitHub Token. By default uses context token"
+    default: ${{ github.token }}
+    required: false
+  repository:
+    description: "Target release repository. By default uses current repository. Format {owner}/{repositoryName}"
+    default: ${{ github.repository }}
+    required: false
+  results_per_page:
+    description: "Max=100, default=100"
+    required: false
+    default: "100"
+  page:
+    description: "Default=1"
+    required: false
+    default: "1"
+
+runs:
+  using: "node12"
+  main: "main.js"
