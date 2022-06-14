@@ -16,7 +16,7 @@ async function start() {
   console.log(owner);
   console.log(token.length);
 
-  const releases = await octokit.repos.listReleases({
+  const releases = await octokit.rest.repos.listReleases({
     repo: repo,
     owner: owner,
     per_page: resultsPerPage,
