@@ -1,6 +1,5 @@
 const {getOctokit} = require("@actions/github");
-const {pipeline} = require("stream/promises");
-const {createWriteStream} = require("fs");
+const {writeFileSync} = require("fs");
 const {cwd} = require('node:process');
 const core = require('@actions/core');
 const fetch = require("node-fetch");
@@ -51,7 +50,9 @@ async function getRepositoryReleases(repository) {
 async function downloadAsset(asset) {
   const assetName = asset.name;
   const assetUrl = asset.url;
-  return pipeline((await fetch(assetUrl)).body, createWriteStream(`${workingDir}/${assetName}`));
+  const response = await fetch(assetUrl);
+  const buffer = await response.buffer();
+  writeFileSync(`${workingDir}/${assetName}`, buffer);
 }
 
 run();
