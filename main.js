@@ -16,7 +16,7 @@ async function run() {
     const releases = await getRepositoryReleases(repository);
     const foundRelease = findRelease(releases, releaseName);
 
-    await findAndDownloadReleaseAssets(foundRelease);
+    await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
     console.log(e);
   }
