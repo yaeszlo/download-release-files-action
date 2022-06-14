@@ -1,6 +1,5 @@
 const {getOctokit} = require("@actions/github");
 const {writeFileSync} = require("fs");
-const {cwd} = require('node:process');
 const core = require('@actions/core');
 const fetch = require("node-fetch");
 
@@ -10,7 +9,7 @@ const releaseName = core.getInput('release_name');
 const fileName = core.getInput('file_name');
 
 const octokit = getOctokit(token);
-const workingDir = cwd();
+const workingDir = process.cwd();
 
 async function run() {
   try {
