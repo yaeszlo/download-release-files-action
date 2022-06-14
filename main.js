@@ -9,21 +9,25 @@ const page = +core.getInput('page');
 const octokit = getOctokit(token);
 
 async function start() {
-  const [ repo, owner ] = repository.split('/')
+  const [repo, owner] = repository.split('/')
 
   console.log(repository);
   console.log(repo);
   console.log(owner);
   console.log(token.length);
 
-  const releases = await octokit.rest.repos.listReleases({
-    repo: repo,
-    owner: owner,
-    per_page: resultsPerPage,
-    page: page
-  });
+  try {
+    const releases = await octokit.rest.repos.listReleases({
+      repo: repo,
+      owner: owner,
+      per_page: resultsPerPage,
+      page: page
+    });
+    console.log(releases);
+  } catch (e) {
+    console.log(e);
+  }
 
-  console.log(releases);
 }
 
 start();
