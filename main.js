@@ -52,15 +52,13 @@ async function downloadAsset(asset) {
   const assetUrl = asset.url;
   const response = await fetch(assetUrl, {
     headers: {Authorization: `token ${token}`},
-    Accept: "application/octet-stream"
   });
 
-  const fileWriteStream = createWriteStream(`${workingDir}/${assetName}`);
-  console.log(fileWriteStream);
-  console.log(response);
-  response.body.pipe(fileWriteStream);
+  const buffer = await response.buffer();
 
-  return Promise.resolve();
+  return new Promise(resolve => {
+    createWriteStream(`${workingDir}/${assetName}`).write(buffer, resolve);
+  })
 }
 
 run();
