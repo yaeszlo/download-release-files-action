@@ -55,10 +55,9 @@ async function downloadAsset(asset) {
 
   console.log('======================================')
   console.log(response);
-  console.log(await response.json());
   console.log('======================================')
 
-  const buffer = await response.buffer();
+  const buffer = await response.arrayBuffer();
   writeFileSync(`${workingDir}/${assetName}`, buffer);
 }
 
