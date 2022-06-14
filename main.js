@@ -21,10 +21,12 @@ async function start() {
       owner: owner,
       per_page: 100,
     });
-    console.log(releases);
+    console.log('=====================direct assets==================')
+    console.log(releases[0].assets);
 
+
+    console.log('==============================URL ASSETS=============================')
     const assets = await request(releases.data[0].assets_url);
-
     console.log(assets);
   } catch (e) {
     console.log(e);
