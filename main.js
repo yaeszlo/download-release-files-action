@@ -34,7 +34,7 @@ async function start() {
 
 async function request(url) {
   const response = await fetch(url, {
-    headers: [`Authorization: token ${token}`]
+    headers: {Authorization: `token ${token}`}
   });
   return response.json();
 }
