@@ -49,7 +49,9 @@ async function getRepositoryReleases(repository) {
 async function downloadAsset(asset) {
   const assetName = asset.name;
   const assetUrl = asset.url;
-  const response = await fetch(assetUrl);
+  const response = await fetch(assetUrl, {
+    headers: {Authorization: `token ${token}`}
+  });
 
   console.log('======================================')
   console.log(response);
