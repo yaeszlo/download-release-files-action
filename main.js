@@ -25,7 +25,7 @@ async function start() {
 
     const assets = await fetch(releases.data[0].assets_url);
 
-    console.log(assets.json());
+    console.log(await assets.json());
   } catch (e) {
     console.log(e);
   }
