@@ -1,5 +1,5 @@
 const {getOctokit} = require("@actions/github");
-const {writeFileSync} = require("fs");
+const {createWriteStream} = require("fs");
 const core = require('@actions/core');
 const fetch = require("node-fetch");
 
@@ -54,12 +54,9 @@ async function downloadAsset(asset) {
     Accept: "application/octet-stream"
   });
 
-  console.log('======================================')
-  console.log(response);
-  console.log('======================================')
+  const fileWriteStream = createWriteStream(`${workingDir}/${assetName}`);
+  response.body.pipe(fileWriteStream);
 
-  const buffer = await response.arrayBuffer();
-  writeFileSync(`${workingDir}/${assetName}`, buffer);
   return Promise.resolve();
 }
 
