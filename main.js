@@ -3,8 +3,6 @@ const core = require('@actions/core');
 
 const token = core.getInput('token');
 const repository = core.getInput('repository');
-const resultsPerPage = +core.getInput('results_per_page');
-const page = +core.getInput('page');
 
 const octokit = getOctokit(token);
 
@@ -20,8 +18,7 @@ async function start() {
     const releases = await octokit.rest.repos.listReleases({
       repo: repo,
       owner: owner,
-      per_page: resultsPerPage,
-      page: page
+      per_page: 100,
     });
     console.log(releases);
   } catch (e) {
