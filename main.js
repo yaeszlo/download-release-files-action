@@ -1,5 +1,6 @@
 const {getOctokit} = require("@actions/github");
 const core = require('@actions/core');
+const fetch = require("node-fetch");
 
 const token = core.getInput('token');
 const repository = core.getInput('repository');
@@ -7,7 +8,7 @@ const repository = core.getInput('repository');
 const octokit = getOctokit(token);
 
 async function start() {
-  const [owner, repo] = repository.split('/')
+  const [owner, repo] = repository.split('/');
 
   console.log(repository);
   console.log(repo);
@@ -21,6 +22,10 @@ async function start() {
       per_page: 100,
     });
     console.log(releases);
+
+    const assets = await fetch(releases.data[0].assets_url);
+
+    console.log(assets.json());
   } catch (e) {
     console.log(e);
   }

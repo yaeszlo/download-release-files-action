@@ -3,12 +3,18 @@ name: "download-release-files-action"
 description: "GitHub Action able to download release files"
 inputs:
   token:
-    description: "GitHub Token. By default uses context token"
+    description: "GitHub Token. By default uses context token."
     default: ${{ github.token }}
     required: false
   repository:
     description: "Target release repository. By default uses current repository. Format {owner}/{repositoryName}"
     default: ${{ github.repository }}
+    required: false
+  releaseName:
+    description: "Target release name. Can use regex to match name. If not provided, the action will download latest available release."
+    required: false
+  fileName:
+    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can specify set of file names separated by comma. Regex is accepted."
     required: false
 
 runs:
