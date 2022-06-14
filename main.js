@@ -23,13 +23,20 @@ async function start() {
     });
     console.log(releases);
 
-    const assets = await fetch(releases.data[0].assets_url);
+    const assets = await request(releases.data[0].assets_url);
 
     console.log(await assets.json());
   } catch (e) {
     console.log(e);
   }
 
+}
+
+async function request(url) {
+  const response = await fetch(url, {
+    headers: [`Authorization: token ${token}`]
+  });
+  return response.json();
 }
 
 start();
