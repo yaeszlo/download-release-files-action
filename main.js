@@ -50,6 +50,12 @@ async function downloadAsset(asset) {
   const assetName = asset.name;
   const assetUrl = asset.url;
   const response = await fetch(assetUrl);
+
+  console.log('======================================')
+  console.log(response);
+  console.log(await response.json());
+  console.log('======================================')
+
   const buffer = await response.buffer();
   writeFileSync(`${workingDir}/${assetName}`, buffer);
 }
