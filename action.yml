@@ -1,6 +1,6 @@
 name: "download-release-files-action"
 
-description: "GitHub Action able to download release files"
+description: "GitHub Action able to download release files. Search is limited to most recent 100 releases."
 inputs:
   token:
     description: "GitHub Token. By default uses context token."
@@ -10,12 +10,13 @@ inputs:
     description: "Target release repository. By default uses current repository. Format {owner}/{repositoryName}"
     default: ${{ github.repository }}
     required: false
-  releaseName:
+  release_name:
     description: "Target release name. Can use regex to match name. If not provided, the action will download latest available release."
     required: false
-  fileName:
-    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can specify set of file names separated by comma. Regex is accepted."
+  file_name:
+    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can use Regex to get multiple files eg. /(file1.exe|file2.exe)/ or /(.exe|.zip)/"
     required: false
+    default: /./
 
 runs:
   using: "node12"
