@@ -9,7 +9,7 @@ const page = +core.getInput('page');
 const octokit = getOctokit(token);
 
 async function start() {
-  const [repo, owner] = repository.split('/')
+  const [owner, repo] = repository.split('/')
 
   console.log(repository);
   console.log(repo);
