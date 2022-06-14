@@ -39,11 +39,13 @@ function findRelease(releases, releaseName) {
 async function getRepositoryReleases(repository) {
   const [owner, repo] = repository.split('/');
 
-  return octokit.rest.repos.listReleases({
+  const response = await octokit.rest.repos.listReleases({
     repo: repo,
     owner: owner,
     per_page: 100,
   });
+
+  return response.data;
 }
 
 async function downloadAsset(asset) {
