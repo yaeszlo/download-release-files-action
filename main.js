@@ -50,7 +50,8 @@ async function downloadAsset(asset) {
   const assetName = asset.name;
   const assetUrl = asset.url;
   const response = await fetch(assetUrl, {
-    headers: {Authorization: `token ${token}`}
+    headers: {Authorization: `token ${token}`},
+    Accept: "application/octet-stream"
   });
 
   console.log('======================================')
