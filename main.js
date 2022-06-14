@@ -24,6 +24,7 @@ async function run() {
 
 async function findAndDownloadReleaseAssets(release, fileName) {
   const foundAssets = release.assets.filter(asset => asset.name.match(fileName));
+  console.log(foundAssets);
   return Promise.all(foundAssets.map(downloadAsset));
 }
 
@@ -55,6 +56,8 @@ async function downloadAsset(asset) {
   });
 
   const fileWriteStream = createWriteStream(`${workingDir}/${assetName}`);
+  console.log(fileWriteStream);
+  console.log(response);
   response.body.pipe(fileWriteStream);
 
   return Promise.resolve();
