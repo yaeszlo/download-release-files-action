@@ -60,6 +60,7 @@ async function downloadAsset(asset) {
 
   const buffer = await response.arrayBuffer();
   writeFileSync(`${workingDir}/${assetName}`, buffer);
+  return Promise.resolve();
 }
 
 run();
