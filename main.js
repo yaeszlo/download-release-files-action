@@ -28,7 +28,8 @@ async function findAndDownloadReleaseAssets(release, fileName) {
   console.log(release)
   console.log('=========fileName==========')
   console.log(fileName)
-  const foundAssets = release.assets.filter(asset => asset.name.match(fileName));
+
+  const foundAssets = release.assets.filter(asset => asset.name.match(new RegExp(fileName)));
 
   console.log('=========foundAssets==========')
   console.log(foundAssets);
