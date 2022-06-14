@@ -25,7 +25,7 @@ async function start() {
 
     const assets = await request(releases.data[0].assets_url);
 
-    console.log(await assets.json());
+    console.log(assets);
   } catch (e) {
     console.log(e);
   }
@@ -34,9 +34,11 @@ async function start() {
 
 async function request(url) {
   const response = await fetch(url, {
-    headers: {Authorization: `token ${token}`}
+    headers: {
+      Authorization: `token ${token}`
+    }
   });
-  return response.body.json();
+  return response.json();
 }
 
 start();
