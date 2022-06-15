@@ -49,11 +49,11 @@ async function findAndDownloadReleaseAssets(release, fileName) {
 function findRelease(releaseName, releases) {
   core.info(`All found releases: ${releases.length}`)
   let filteredReleases = releases
-  if (excludePrerelease) {
+  if (excludePrerelease === "true") {
     filteredReleases = filteredReleases.filter(release => release.prerelease === false);
     core.info(`Filtered prereleases... New size: ${filteredReleases.length}`)
   }
-  if (excludeDraft) {
+  if (excludeDraft === "true") {
     filteredReleases = filteredReleases.filter(release => release.draft === false);
     core.info(`Filtered drafts... New size: ${filteredReleases.length}`)
   }
