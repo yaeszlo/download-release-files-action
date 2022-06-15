@@ -26,7 +26,7 @@ async function run() {
     }
 
     if (!foundRelease) {
-      core.error(`No release matches ${foundRelease.name}`);
+      core.error(`No release matches ${releaseName}`);
     } else {
       core.info(`Found release name=${foundRelease.name}`);
     }
@@ -59,16 +59,7 @@ function findRelease(releaseName, releases) {
   }
 
   const regex = new RegExp(releaseName);
-
-  console.log(`phrase=${releaseName}`);
-  console.log(`using=${regex}`);
-
-  return filteredReleases.find(release => {
-    console.log(`release=${release}`);
-    console.log(`release name=${release.name}`)
-    console.log(`matches=${release.name.match(regex)}`);
-    return release.name.match(regex);
-  });
+  return filteredReleases.find(release => release.name.match(regex));
 }
 
 async function getRepositoryReleases(owner, repo) {
