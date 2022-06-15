@@ -26,7 +26,7 @@ async function run() {
     }
 
     if (!foundRelease) {
-      core.error(`No release matches ${releaseName}`);
+      throw new Error(`No release matches ${releaseName}`);
     } else {
       core.info(`Found release name=${foundRelease.name}`);
     }
@@ -34,6 +34,7 @@ async function run() {
     await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
     console.log(e);
+    process.exit(1);
   }
 }
 
@@ -57,6 +58,8 @@ function findRelease(releaseName, releases) {
     filteredReleases = filteredReleases.filter(release => release.draft === false);
     core.info(`Filtered drafts... New size: ${filteredReleases.length}`)
   }
+
+  console.log(filteredReleases);
 
   const regex = new RegExp(releaseName);
   return filteredReleases.find(release => release.name.match(regex));
