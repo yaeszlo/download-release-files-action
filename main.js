@@ -18,12 +18,13 @@ async function run() {
     let foundRelease;
     if (!releaseName) {
       foundRelease = await getLatestRelease(owner, repo);
+      core.info('Got latest release');
     } else {
       const releases = await getRepositoryReleases(owner, repo);
       foundRelease = findRelease(releaseName, releases);
     }
 
-    core.info(`Found release name=${foundRelease.name} latest=${releaseName === null}`);
+    core.info(`Found release name=${foundRelease.name}`);
 
     await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
