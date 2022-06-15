@@ -23,7 +23,8 @@ async function run() {
 }
 
 async function findAndDownloadReleaseAssets(release, fileName) {
-  const foundAssets = release.assets.filter(asset => asset.name.match(fileName));
+  const regex = new RegExp(fileName);
+  const foundAssets = release.assets.filter(asset => asset.name.match(regex));
 
   console.log('=========foundAssets==========')
   console.log(foundAssets);
