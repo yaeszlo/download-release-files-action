@@ -1,7 +1,6 @@
 const {getOctokit} = require("@actions/github");
 const {writeFileSync} = require("fs");
 const core = require('@actions/core');
-const fetch = require("node-fetch");
 
 const token = core.getInput('token');
 const repository = core.getInput('repository');
@@ -41,8 +40,8 @@ function findRelease(releaseName, releases) {
 
 async function getRepositoryReleases(repo, owner) {
   const response = await octokit.rest.repos.listReleases({
-    repo,
-    owner,
+    repo: repo,
+    owner: owner,
     per_page: 100,
   });
 
@@ -53,8 +52,8 @@ async function downloadAsset(asset) {
   const assetName = asset.name;
 
   const response = await octokit.rest.repos.getReleaseAsset({
-    owner,
-    repo,
+    repo: repo,
+    owner: owner,
     asset_id: asset.id,
     headers: {
       Accept: 'application/octet-stream'
