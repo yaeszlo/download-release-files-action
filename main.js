@@ -52,7 +52,7 @@ async function getRepositoryReleases(repo, owner) {
 async function downloadAsset(asset) {
   const assetName = asset.name;
 
-  const response = await getOctokit(token).rest.repos.getReleaseAsset({
+  const response = await octokit.rest.repos.getReleaseAsset({
     owner,
     repo,
     asset_id: asset.id,
