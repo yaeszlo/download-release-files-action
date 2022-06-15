@@ -24,18 +24,10 @@ async function run() {
 
 async function findAndDownloadReleaseAssets(release, fileName) {
   const regex = new RegExp(fileName);
-  const foundAssets = release.assets.filter(asset => {
+  const foundAssets = release.assets.filter(asset => asset.name.match(regex));
 
+  if (!foundAssets.length) throw new Error(`No assets found using ${fileName}`)
 
-    console.log(asset.name.match(regex))
-    console.log(regex)
-    console.log(asset.name)
-
-    return asset.name.match(regex)
-  });
-
-  console.log('=========foundAssets==========')
-  console.log(foundAssets);
   return Promise.all(foundAssets.map(downloadAsset));
 }
 
@@ -60,7 +52,7 @@ async function getRepositoryReleases(repository) {
 
 async function downloadAsset(asset) {
   const assetName = asset.name;
-  const assetUrl = asset.url;
+  const assetUrl = asset.browser_download_url;
   const response = await fetch(assetUrl, {
     headers: {Authorization: `token ${token}`},
   });
