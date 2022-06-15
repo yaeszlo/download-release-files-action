@@ -13,7 +13,7 @@ const workingDir = process.cwd();
 
 async function run() {
   try {
-    const releases = await getRepositoryReleases(repository);
+    const releases = await getRepositoryReleases(owner, repo);
     const foundRelease = findRelease(releaseName, releases);
 
     await findAndDownloadReleaseAssets(foundRelease, fileName);
@@ -38,7 +38,7 @@ function findRelease(releaseName, releases) {
   return releases.find(release => release.name.match(releaseName));
 }
 
-async function getRepositoryReleases(repo, owner) {
+async function getRepositoryReleases(owner, repo) {
   const response = await octokit.rest.repos.listReleases({
     repo: repo,
     owner: owner,
