@@ -25,12 +25,14 @@ async function run() {
       foundRelease = findRelease(releaseName, releases);
     }
 
+    console.log('=====')
+    console.log(foundRelease);
+    console.log('=====')
     core.info(`Found release name=${foundRelease.name}`);
 
     await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
-    core.error(e);
-    core.error(e.stackTrace);
+    console.log(e);
   }
 }
 
