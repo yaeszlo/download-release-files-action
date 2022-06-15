@@ -59,8 +59,6 @@ function findRelease(releaseName, releases) {
     core.info(`Filtered drafts... New size: ${filteredReleases.length}`)
   }
 
-  console.log(filteredReleases);
-
   const regex = new RegExp(releaseName);
   return filteredReleases.find(release => release.name.match(regex));
 }
