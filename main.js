@@ -1,5 +1,5 @@
 const {getOctokit} = require("@actions/github");
-const {createWriteStream} = require("fs");
+const {writeFileSync} = require("fs");
 const core = require('@actions/core');
 const fetch = require("node-fetch");
 
@@ -8,13 +8,14 @@ const repository = core.getInput('repository');
 const releaseName = core.getInput('release_name');
 const fileName = core.getInput('file_name');
 
+const [owner, repo] = repository.split('/');
 const octokit = getOctokit(token);
 const workingDir = process.cwd();
 
 async function run() {
   try {
     const releases = await getRepositoryReleases(repository);
-    const foundRelease = findRelease(releases, releaseName);
+    const foundRelease = findRelease(releaseName, releases);
 
     await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
@@ -31,19 +32,17 @@ async function findAndDownloadReleaseAssets(release, fileName) {
   return Promise.all(foundAssets.map(downloadAsset));
 }
 
-function findRelease(releases, releaseName) {
+function findRelease(releaseName, releases) {
   if (!releaseName) {
     return releases.find(release => release.latest);
   }
   return releases.find(release => release.name.match(releaseName));
 }
 
-async function getRepositoryReleases(repository) {
-  const [owner, repo] = repository.split('/');
-
+async function getRepositoryReleases(repo, owner) {
   const response = await octokit.rest.repos.listReleases({
-    repo: repo,
-    owner: owner,
+    repo,
+    owner,
     per_page: 100,
   });
 
@@ -52,16 +51,17 @@ async function getRepositoryReleases(repository) {
 
 async function downloadAsset(asset) {
   const assetName = asset.name;
-  const assetUrl = asset.browser_download_url;
-  const response = await fetch(assetUrl, {
-    headers: {Authorization: `token ${token}`},
+
+  const response = await getOctokit(token).rest.repos.getReleaseAsset({
+    owner,
+    repo,
+    asset_id: asset.id,
+    headers: {
+      Accept: 'application/octet-stream'
+    }
   });
 
-  const buffer = await response.buffer();
-
-  return new Promise(resolve => {
-    createWriteStream(`${workingDir}/${assetName}`).write(buffer, resolve);
-  })
+  writeFileSync(`${workingDir}/${assetName}`, new DataView(response.data));
 }
 
 run();
