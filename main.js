@@ -59,7 +59,16 @@ function findRelease(releaseName, releases) {
   }
 
   const regex = new RegExp(releaseName);
-  return filteredReleases.find(release => release.name.match(regex));
+
+  console.log(`phrase=${releaseName}`);
+  console.log(`using=${regex}`);
+
+  return filteredReleases.find(release => {
+    console.log(`release=${release}`);
+    console.log(`release name=${release.name}`)
+    console.log(`matches=${release.name.match(regex)}`);
+    return release.name.match(regex);
+  });
 }
 
 async function getRepositoryReleases(owner, repo) {
