@@ -11,10 +11,10 @@ inputs:
     default: ${{ github.repository }}
     required: false
   release_name:
-    description: "Target release name. Can use regex to match name. If not provided, the action will download latest available release."
+    description: "Target release name. Can use regex to match name. If not provided, the action will download latest available release. Example: '1.2.\\d' will find newest release matching the expression."
     required: false
   file_name:
-    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can use Regex to get multiple files eg. /(file1.exe|file2.exe)/ or /(.exe|.zip)/"
+    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can use Regex to get multiple files eg. '(file1.exe|v1.1.\\d.exe)' or '(.exe|.zip)'"
     required: false
     default: /./
 
