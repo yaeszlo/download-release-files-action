@@ -6,6 +6,8 @@ const token = core.getInput('token');
 const repository = core.getInput('repository');
 const releaseName = core.getInput('release_name');
 const fileName = core.getInput('file_name');
+const excludeDraft = core.getInput('exclude_draft');
+const excludePrerelease = core.getInput('exclude_prerelease');
 
 const [owner, repo] = repository.split('/');
 const octokit = getOctokit(token);
@@ -13,12 +15,19 @@ const workingDir = process.cwd();
 
 async function run() {
   try {
-    const releases = await getRepositoryReleases(owner, repo);
-    const foundRelease = findRelease(releaseName, releases);
+    let foundRelease;
+    if (!releaseName) {
+      foundRelease = await getLatestRelease(owner, repo);
+    } else {
+      const releases = await getRepositoryReleases(owner, repo);
+      foundRelease = findRelease(releaseName, releases);
+    }
+
+    core.info(`Found release name=${foundRelease.name} latest=${releaseName === null}`);
 
     await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
-    console.log(e);
+    core.error(e);
   }
 }
 
@@ -26,15 +35,15 @@ async function findAndDownloadReleaseAssets(release, fileName) {
   const regex = new RegExp(fileName);
   const foundAssets = release.assets.filter(asset => asset.name.match(regex));
 
-  if (!foundAssets.length) throw new Error(`No assets found using ${fileName}`)
+  if (!foundAssets.length) throw new Error(`No assets found using ${fileName}`);
 
   return Promise.all(foundAssets.map(downloadAsset));
 }
 
 function findRelease(releaseName, releases) {
-  if (!releaseName) {
-    return releases.find(release => release.latest);
-  }
+  if (excludePrerelease) releases.filter(release => release.prerelease === false);
+  if (excludeDraft) releases.filter(release => release.draft === false);
+
   return releases.find(release => release.name.match(releaseName));
 }
 
@@ -48,9 +57,19 @@ async function getRepositoryReleases(owner, repo) {
   return response.data;
 }
 
+async function getLatestRelease(owner, repo) {
+  const response = await octokit.rest.repos.getLatestRelease({
+    owner: owner,
+    repo: repo,
+  });
+
+  return response.data;
+}
+
 async function downloadAsset(asset) {
   const assetName = asset.name;
 
+  core.info(`Downloading asset ${assetName}...`);
   const response = await octokit.rest.repos.getReleaseAsset({
     repo: repo,
     owner: owner,
@@ -61,6 +80,7 @@ async function downloadAsset(asset) {
   });
 
   writeFileSync(`${workingDir}/${assetName}`, new DataView(response.data));
+  core.info(`Done downloading ${assetName}`);
 }
 
 run();
