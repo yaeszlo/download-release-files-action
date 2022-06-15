@@ -20,6 +20,7 @@ async function run() {
       foundRelease = await getLatestRelease(owner, repo);
       core.info('Got latest release');
     } else {
+      core.info(`Looking for matching releases ${releaseName}`)
       const releases = await getRepositoryReleases(owner, repo);
       foundRelease = findRelease(releaseName, releases);
     }
@@ -29,6 +30,7 @@ async function run() {
     await findAndDownloadReleaseAssets(foundRelease, fileName);
   } catch (e) {
     core.error(e);
+    core.error(e.stackTrace);
   }
 }
 
@@ -42,8 +44,16 @@ async function findAndDownloadReleaseAssets(release, fileName) {
 }
 
 function findRelease(releaseName, releases) {
-  if (excludePrerelease) releases.filter(release => release.prerelease === false);
-  if (excludeDraft) releases.filter(release => release.draft === false);
+  core.info(`All found releases: ${releases.length}`)
+  let filteredReleases = releases
+  if (excludePrerelease) {
+    filteredReleases = filteredReleases.filter(release => release.prerelease === false);
+    core.info(`Filtered prereleases... New size: ${filteredReleases.length}`)
+  }
+  if (excludeDraft) {
+    filteredReleases = filteredReleases.filter(release => release.draft === false);
+    core.info(`Filtered drafts... New size: ${filteredReleases.length}`)
+  }
 
   return releases.find(release => release.name.match(releaseName));
 }
