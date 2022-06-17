@@ -6,8 +6,6 @@ const token = core.getInput('token');
 const repository = core.getInput('repository');
 const releaseName = core.getInput('release_name');
 const fileName = core.getInput('file_name');
-const excludeDraft = core.getInput('exclude_draft');
-const excludePrerelease = core.getInput('exclude_prerelease');
 
 const [owner, repo] = repository.split('/');
 const octokit = getOctokit(token);
@@ -49,18 +47,11 @@ async function findAndDownloadReleaseAssets(release, fileName) {
 
 function findRelease(releaseName, releases) {
   core.info(`All found releases: ${releases.length}`)
-  let filteredReleases = releases
-  if (excludePrerelease === "true") {
-    filteredReleases = filteredReleases.filter(release => release.prerelease === false);
-    core.info(`Filtered prereleases... New size: ${filteredReleases.length}`)
-  }
-  if (excludeDraft === "true") {
-    filteredReleases = filteredReleases.filter(release => release.draft === false);
-    core.info(`Filtered drafts... New size: ${filteredReleases.length}`)
-  }
+
+  console.log(releases);
 
   const regex = new RegExp(releaseName);
-  return filteredReleases.find(release => release.name.match(regex));
+  return releases.find(release => release.name.match(regex));
 }
 
 async function getRepositoryReleases(owner, repo) {

@@ -17,14 +17,6 @@ inputs:
     description: "Excludes draft releases. Default=true"
     required: false
     default: "true"
-  exclude_prerelease:
-    description: "Excludes prereleases. Default=true"
-    required: false
-    default: "true"
-  file_name:
-    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can use Regex to get multiple files eg. '(file1.exe|v1.1.\\d.exe)' or '(.exe|.zip)'"
-    required: false
-    default: .
 
 runs:
   using: "node16"
