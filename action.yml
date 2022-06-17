@@ -13,10 +13,10 @@ inputs:
   release_name:
     description: "Target release name. Can use regex to match name - Example: '1.2.\\d' will find single newest release matching the expression. If not provided, the action will take latest available release."
     required: false
-  exclude_draft:
-    description: "Excludes draft releases. Default=true"
+  file_name:
+    description: "File(s) to be downloaded. If not provided, the action will download all available release files. Can use Regex to get multiple files eg. '(file1.exe|v1.1.\\d.exe)' or '(.exe|.zip)'"
     required: false
-    default: "true"
+    default: .
 
 runs:
   using: "node16"
