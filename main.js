@@ -48,8 +48,6 @@ async function findAndDownloadReleaseAssets(release, fileName) {
 function findRelease(releaseName, releases) {
   core.info(`All found releases: ${releases.length}`)
 
-  console.log(releases);
-
   const regex = new RegExp(releaseName);
   return releases.find(release => release.name.match(regex));
 }
