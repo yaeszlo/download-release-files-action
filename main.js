@@ -4,8 +4,8 @@ const core = require('@actions/core');
 
 const token = core.getInput('token');
 const repository = core.getInput('repository');
-const releaseName = escapeRegex(core.getInput('release_name'));
-const fileName = escapeRegex(core.getInput('file_name'));
+const releaseName = core.getInput('release_name');
+const fileName = core.getInput('file_name');
 
 const [owner, repo] = repository.split('/');
 const octokit = getOctokit(token);
@@ -86,10 +86,6 @@ async function downloadAsset(asset) {
 
   writeFileSync(`${workingDir}/${assetName}`, new DataView(response.data));
   core.info(`Done downloading ${assetName}`);
-}
-
-function escapeRegex(string) {
-  return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 }
 
 run();
