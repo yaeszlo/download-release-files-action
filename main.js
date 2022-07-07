@@ -5,7 +5,7 @@ const core = require('@actions/core');
 const token = core.getInput('token');
 const repository = core.getInput('repository');
 const releaseName = core.getInput('release_name');
-const fileName = core.getInput('file_name');
+const fileName = `${core.getInput('file_name')}`;
 
 const [owner, repo] = repository.split('/');
 const octokit = getOctokit(token);
