@@ -4,8 +4,8 @@ const core = require('@actions/core');
 
 const token = core.getInput('token');
 const repository = core.getInput('repository');
-const releaseName = core.getInput('release_name');
-const fileName = core.getInput('file_name')
+const releaseName = escapeRegex(core.getInput('release_name'));
+const fileName = escapeRegex(core.getInput('file_name'));
 
 const [owner, repo] = repository.split('/');
 const octokit = getOctokit(token);
@@ -37,7 +37,7 @@ async function run() {
 }
 
 async function findAndDownloadReleaseAssets(release, fileName) {
-  const regex = new RegExp(escapeRegex(fileName));
+  const regex = new RegExp(fileName);
   const foundAssets = release.assets.filter(asset => asset.name.match(regex));
 
   if (!foundAssets.length) throw new Error(`No assets found using ${fileName}`);
